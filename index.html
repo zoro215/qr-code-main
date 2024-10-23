@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        p {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Speech Translator</h2>
+
+<button onclick="startRecognition()">Нажмите и говорите</button>
+<br><br>
+<h3>Распознанный текст:</h3>
+<p id="recognizedText"></p>
+<br>
+<h3>Результат перевода:</h3>
+<p id="result"></p>
+
+<script>
+    // Проверка поддержки SpeechRecognition API
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'ru-RU'; // Устанавливаем язык распознавания, например, русский
+
+    // Запуск распознавания речи
+    function startRecognition() {
+        recognition.start();
+    }
+
+    // Когда речь распознана
+    recognition.onresult = function(event) {
+        const spokenText = event.results[0][0].transcript; // Преобразованный текст
+        document.getElementById('recognizedText').innerText = spokenText;
+
+        // Перевод текста
+        let translatedText = '';
+
+        if (spokenText === "Привет.") {
+            translatedText = "Hello";
+        } else if (spokenText === "Спасибо.") {
+            translatedText = "Thank you";
+        } else if (spokenText === "Как дела?") {
+            translatedText = "How are you?";
+        } 
+        if (spokenText === "Как тебя зовут?") {
+            translatedText = "what is you name ";
+        }
+        if (spokenText === "Мир.") {
+            translatedText = "word";
+        }
+        if (spokenText === "Магазин.") {
+            translatedText = "Store";
+        }
+        if (spokenText === ".") {
+            translatedText = "";
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        else {
+            translatedText = "Перевод не найден";
+        }
+        document.getElementById('result').innerText = translatedText;
+
+        // Озвучивание перевода
+        let utterance = new SpeechSynthesisUtterance(translatedText);
+        utterance.lang = 'en-US';  // Установка языка для озвучивания
+        speechSynthesis.speak(utterance);
+    }
+
+    // Ошибка распознавания
+    recognition.onerror = function(event) {
+        alert('Ошибка распознавания речи: ' + event.error);
+    }
+</script>
+<script src="./script.js"></script>
+</body>
+</html>
